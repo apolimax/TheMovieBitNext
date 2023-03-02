@@ -5,4 +5,13 @@ type Category = {
 
 type Genres = Category[];
 
-export type { Category, Genres };
+type Movie = {
+  poster_path: string;
+  title: string;
+  release_date: string;
+  id: number;
+};
+
+type Movies = Movie[];
+
+export type { Category, Genres, Movie, Movies };
