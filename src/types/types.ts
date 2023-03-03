@@ -10,6 +10,7 @@ type Movie = {
   title: string;
   release_date: string;
   id: number;
+  genre_ids: number[];
 };
 
 type Movies = Movie[];
