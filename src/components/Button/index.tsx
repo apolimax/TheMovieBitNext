@@ -1,8 +1,8 @@
+import { useMovieContext } from "@/store/moviesContext";
 import { Category } from "@/types/types";
 import { useState, useEffect } from "react";
 
 import { AiFillCloseCircle } from "react-icons/ai";
-//import { useMovieContext } from "../../store/context";
 
 import * as S from "./styles";
 
@@ -11,21 +11,19 @@ type ButtonProps = {
 };
 
 export default function Button({ category }: ButtonProps) {
-  /* const {
-    activeGenres,
-    setActiveGenres,
-    getPopularMoviesByGenres,
-    currentPage,
-  } = useMovieContext(); */
+  const { activeGenres, setActiveGenres, getMoviesByGenres, currentPage } =
+    useMovieContext();
 
   const [isGenreActive, setIsGenreActive] = useState(false);
 
-  /* useEffect(() => {
+  useEffect(() => {
     setIsGenreActive(false); // everytime someone changes the page, the selected genres must be undone
-  }, [currentPage]); */
+  }, [currentPage]);
+
+  //console.log("activeGenres: ", activeGenres);
 
   function addCategory() {
-    /* if (isGenreActive) {
+    if (isGenreActive) {
       setIsGenreActive(false);
 
       // filtering out a genre when clicked the second time
@@ -33,13 +31,13 @@ export default function Button({ category }: ButtonProps) {
         (item) => item !== category.id
       );
       setActiveGenres(newActiveGenres);
-      getPopularMoviesByGenres(newActiveGenres);
+      getMoviesByGenres(newActiveGenres);
     } else {
       const newActiveGenres = [...activeGenres, category.id];
       setActiveGenres(newActiveGenres);
-      getPopularMoviesByGenres(newActiveGenres);
+      getMoviesByGenres(newActiveGenres);
       setIsGenreActive(true);
-    } */
+    }
   }
 
   return (

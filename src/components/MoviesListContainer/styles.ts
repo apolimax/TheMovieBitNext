@@ -1,6 +1,13 @@
 import styled from "styled-components";
 import media from "styled-media-query";
 
+export const MoviesListContainerNoMovie = styled.main`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 474px);
+`;
+
 export const MoviesListContainer = styled.main`
   /* width: 100%;*/
   margin: 40px auto;

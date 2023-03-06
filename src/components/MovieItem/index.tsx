@@ -1,14 +1,17 @@
 import { Movie } from "@/types/types";
 import Image from "next/image";
+import Link from "next/link";
 import * as S from "./styles";
 
 export default function MoviesItem({ ...movie }: Movie) {
   return (
-    <div>
-      <S.MovieItemContainer onClick={() => {}}>
+    <S.MovieItemContainer onClick={() => {}}>
+      <Link href={`/movie/${movie.id}`}>
         <Image
           src={`https://image.tmdb.org/t/p/w154/${movie.poster_path}`}
           alt={movie.title}
+          width={154}
+          height={231}
         />
         <p>{movie.title}</p>
         <S.Date>
@@ -16,7 +19,7 @@ export default function MoviesItem({ ...movie }: Movie) {
             new Date(movie.release_date)
           )}
         </S.Date>{" "}
-      </S.MovieItemContainer>
-    </div>
+      </Link>
+    </S.MovieItemContainer>
   );
 }

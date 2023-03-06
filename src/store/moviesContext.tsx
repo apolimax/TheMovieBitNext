@@ -7,13 +7,15 @@ import {
   Dispatch,
   SetStateAction,
 } from "react";
+
 import api from "../api/api";
 
 type MoviesContextType = {
-  movies: (Movie | null)[];
+  movies: Movie[];
+  isLoading: boolean;
   genres: Genres;
   activeGenres: number[];
-  setActiveGenres: Dispatch<SetStateAction<never[]>>;
+  setActiveGenres: Dispatch<SetStateAction<number[]>>;
   getMoviesByGenres: (genres: number[]) => void;
   currentPage: number;
   setCurrentPage: (currentPage: number) => void;
@@ -29,21 +31,12 @@ type MoviesContextProviderType = {
 export default function MoviesContextProvider({
   children,
 }: MoviesContextProviderType) {
-  const [movies, setMovies] = useState<(Movie | null)[]>([]);
+  const [movies, setMovies] = useState<any[]>([]);
   const [mostPopularsContext, setMostPopularsContext] = useState<Movie[]>([]);
   const [genres, setGenres] = useState<Genres>([]);
-  const [activeGenres, setActiveGenres] = useState([]);
+  const [activeGenres, setActiveGenres] = useState<number[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-
-  //console.log("currentPage", currentPage);
-  //console.log({ movies });
-
-  //const [isLoading, setIsLoading] = useState(true);
-
-  //console.log("activeGenres", activeGenres);
-
-  console.log({ movies });
-  console.log(process.env.NEXT_PUBLIC_TMDB_API_KEY);
 
   async function getPopularMovies(currentPage: number) {
     try {
@@ -52,7 +45,6 @@ export default function MoviesContextProvider({
       );
 
       if (response.status !== 200) {
-        console.log("oiiii");
         throw new Error("Failed to load the data from the API");
       }
 
@@ -62,14 +54,16 @@ export default function MoviesContextProvider({
 
       setMovies(results);
       setMostPopularsContext(results); // I won't change its state inside the app. I'll only use it to set the new state from the filters.
-      //setIsLoading(false);
+      setIsLoading(false);
     } catch (err) {
       console.log("err", err);
-      //setIsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  console.log({ genres });
+  useEffect(() => {
+    getPopularMovies(currentPage);
+  }, [currentPage]);
 
   useEffect(() => {
     async function getGenres() {
@@ -86,16 +80,16 @@ export default function MoviesContextProvider({
           data: { genres },
         } = response;
         setGenres(genres);
-        //setIsLoading(false);
+        setIsLoading(false);
       } catch (err) {
         console.log("err", err);
-        //setIsLoading(false);
+        setIsLoading(false);
       }
     }
-
-    getPopularMovies(currentPage);
     getGenres();
-  }, [currentPage]);
+  }, []);
+
+  //console.log("currentPage: ", currentPage);
 
   function getMoviesByGenres(genres: number[]) {
     if (genres.length === 0) {
@@ -116,18 +110,15 @@ export default function MoviesContextProvider({
     const newPopularMoviesByGenresSet = Array.from(
       new Set(newPopularMoviesByGenres)
     );
-    // TODO: if there are no movie found by the selected genre, show message
+
     setMovies(newPopularMoviesByGenresSet);
   }
-
-  // console.log("mostPopulars", mostPopulars);
-  // console.log("activeGenres", activeGenres);
 
   return (
     <MoviesContext.Provider
       value={{
         movies,
-        //isLoading,
+        isLoading,
         genres,
         activeGenres,
         setActiveGenres,
@@ -143,7 +134,27 @@ export default function MoviesContextProvider({
 }
 
 export function useMovieContext() {
-  const moviesContext = useContext(MoviesContext);
+  const {
+    movies,
+    isLoading,
+    genres,
+    activeGenres,
+    setActiveGenres,
+    getMoviesByGenres,
+    currentPage,
+    setCurrentPage,
+    getPopularMovies,
+  } = useContext(MoviesContext);
 
-  return moviesContext;
+  return {
+    movies,
+    isLoading,
+    genres,
+    activeGenres,
+    setActiveGenres,
+    getMoviesByGenres,
+    currentPage,
+    setCurrentPage,
+    getPopularMovies,
+  };
 }

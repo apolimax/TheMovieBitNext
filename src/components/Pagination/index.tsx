@@ -10,8 +10,8 @@ export default function Pagination({ changePage }: PaginationProps) {
   return (
     <S.Pagination>
       <ReactPaginate
-        previousLabel={"Anterior"}
-        nextLabel={"Próxima"}
+        previousLabel={"Previous"}
+        nextLabel={"Next"}
         pageCount={5}
         onPageChange={changePage}
       />
