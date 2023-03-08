@@ -9,7 +9,7 @@ import {
   getReleaseYear,
 } from "../../utils/utils";
 
-import * as S from "./styles";
+import * as S from "../../components/pagesStyles/styles";
 
 import Cast from "@/components/Cast";
 import Rating from "@/components/Rating";
