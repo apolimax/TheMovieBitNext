@@ -24,4 +24,11 @@ type Movie = {
 
 type Movies = Movie[];
 
-export type { Category, Genres, Movie, Movies };
+type Actor = {
+  id: string;
+  profile_path: string;
+  name: string;
+  character: string;
+};
+
+export type { Category, Genres, Movie, Movies, Actor };
