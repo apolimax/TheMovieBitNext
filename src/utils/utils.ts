@@ -1,4 +1,6 @@
-export function getReleaseDateBR(movie) {
+import { Genres, Movie } from "@/types/types";
+
+export function getReleaseDateBR(movie: Movie): Date {
   let releaseDateBR = movie?.release_dates?.results?.filter(
     (item) => item.iso_3166_1 === "BR"
   )[0]?.release_dates[0].release_date;
@@ -6,25 +8,25 @@ export function getReleaseDateBR(movie) {
   // if there isn't a release date for Brazil
   if (!releaseDateBR) {
     releaseDateBR =
-      movie?.release_dates.results[0].release_dates[0].release_date;
+      movie?.release_dates?.results[0].release_dates[0].release_date;
   }
 
-  return releaseDateBR;
+  return releaseDateBR!;
 }
 
-export function getFormattedReleaseDate(movie) {
+export function getFormattedReleaseDate(movie: Movie) {
   const releaseDateBR = getReleaseDateBR(movie);
 
   return new Intl.DateTimeFormat("pt-BR").format(new Date(releaseDateBR));
 }
 
-export function getReleaseYear(movie) {
+export function getReleaseYear(movie: Movie) {
   const releaseDateBR = getReleaseDateBR(movie);
 
   return new Date(releaseDateBR).getFullYear();
 }
 
-export function getCertification(movie) {
+export function getCertification(movie: Movie) {
   let certification = movie?.release_dates?.results?.filter(
     (item) => item.iso_3166_1 === "BR"
   )[0]?.release_dates[0].certification;
@@ -38,14 +40,14 @@ export function getCertification(movie) {
   return certification;
 }
 
-export function getDuration(runtime) {
+export function getDuration(runtime: number) {
   const hour = `${runtime / 60}`[0];
   const minutes = runtime % 60;
 
   return `${hour}h ${minutes}m`;
 }
 
-export function getGenres(genres) {
+export function getGenres(genres: Genres) {
   const generos = genres
     ?.map((genre, index) => {
       if (index === genres.length - 1) {

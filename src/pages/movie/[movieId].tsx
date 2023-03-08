@@ -35,7 +35,6 @@ export default function Movie() {
   }, []);
 
   const { data, isLoading } = useMovie(movieId as string);
-  //console.log(data);
 
   if (isLoading) {
     return <p>Loading content ...</p>;
